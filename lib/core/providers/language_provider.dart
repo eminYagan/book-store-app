@@ -12,7 +12,7 @@ class LanguageNotifier extends StateNotifier<Map<String, String>> {
   // Telefonun diline göre başlangıç dilini ayarlayın
   static Map<String, String> _getInitialLanguage() {
     final Locale deviceLocale = WidgetsBinding.instance.window.locale;
-    if (deviceLocale.languageCode == 'tr') {
+    if (deviceLocale.languageCode == "tr") {
       return trMap;
     } else {
       return enMap;

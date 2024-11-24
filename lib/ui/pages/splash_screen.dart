@@ -1,17 +1,29 @@
 import 'package:book_store_app/core/providers/language_provider.dart';
 import 'package:book_store_app/imports/imports.dart';
+import 'package:book_store_app/ui/pages/authentication/login_page.dart';
 import 'package:book_store_app/ui/widgets/button.dart';
 import 'package:book_store_app/ui/widgets/logo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SplashScreen extends ConsumerWidget {
-
   Imports imports = Imports();
+
+  void navigate(BuildContext context) {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => LoginPage()),
+    );
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final currentLanguage = ref.watch(languageProvider);
+
+    Future.delayed(const Duration(seconds: 3), () {
+      navigate(context);
+    });
+
     return Scaffold(
       backgroundColor: Color(imports.constant.colors.splashBackgroundColor),
       body: Stack(
@@ -20,8 +32,8 @@ class SplashScreen extends ConsumerWidget {
           Align(
             alignment: const Alignment(0, -0.1),
             child: Logo(
-                width: imports.constant.size.screenWidth*0.55,
-                height: imports.constant.size.screenHeight*0.15,
+              width: imports.constant.size.screenWidth * 0.55,
+              height: imports.constant.size.screenHeight * 0.15,
             ),
           ),
 
@@ -31,10 +43,24 @@ class SplashScreen extends ConsumerWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 //LOGIN
-                Button(text: currentLanguage["login"]!, textColor: 0XFFFFFFFF, backgroundColor: 0XFFEF6B4A),
+                InkWell(
+                  onTap: () => navigate(context),
+                  child: Button(
+                      text: currentLanguage["login"]!,
+                      textColor: imports.constant.colors.white,
+                      backgroundColor: imports.constant.colors.orange),
+                ),
 
                 //SKIP
-                Button(text: currentLanguage["skip"]!, textColor: 0XFF6251DD, backgroundColor: imports.constant.colors.splashBackgroundColor)
+                InkWell(
+                  onTap: () => navigate(context),
+                  child: Button(
+                    text: currentLanguage["skip"]!,
+                    textColor: imports.constant.colors.purple,
+                    backgroundColor:
+                        imports.constant.colors.splashBackgroundColor,
+                  ),
+                ),
               ],
             ),
           )
