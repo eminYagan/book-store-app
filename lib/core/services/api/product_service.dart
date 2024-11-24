@@ -53,9 +53,9 @@ class ProductService {
   }
 
 
-  Future<List<dynamic>> fetchProduct(int productId) async {
+  Future<Map<String, dynamic>> fetchProduct(int categoryId, int productId) async {
     try {
-      final url = Uri.parse('$baseUrl/products/$productId');
+      final url = Uri.parse('$baseUrl/products/$categoryId');
 
       final response = await http.get(url);
 
@@ -63,7 +63,11 @@ class ProductService {
         final data = jsonDecode(response.body);
 
         if (data.containsKey('product') && data['product'] is List) {
-          return data['product'];
+          final product = data['product'].firstWhere(
+                (item) => item['id'] == productId,
+            orElse: () => null,
+          );
+          return product;
         } else {
           throw Exception('Unexpected response format: $data');
         }

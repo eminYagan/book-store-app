@@ -33,9 +33,10 @@ void main() {
 
 
     test('Fetch single product successfully', () async {
-      const int productId = 1;
+      const int categoryId = 1;
+      const int productId = 3;
 
-      final product = await productService.fetchProduct(productId);
+      final product = await productService.fetchProduct(categoryId, productId);
 
       expect(product, isNotNull);
     });
