@@ -16,6 +16,11 @@ const Map<String, String> trMap = {
   "passwordAlphanumericError": "Şifre alfanumerik olmalıdır!",
   "nameEmptyError": "İsim boş olamaz!",
 
+  //PRODUCT
+  "catalog" : "Katalog",
+  "viewAll" : "Hepsini Göster",
+  "search" : "Ara",
+
 };
 
 const Map<String, String> enMap = {
@@ -35,4 +40,9 @@ const Map<String, String> enMap = {
   "passwordLenghtError": "Password must be between 6-20 characters!",
   "passwordAlphanumericError": "Password must be alphanumeric!",
   "nameEmptyError": "Name can not be empty!",
+
+  //PRODUCT
+  "catalog" : "Catalog",
+  "viewAll" : "View All",
+  "search" : "Search",
 };

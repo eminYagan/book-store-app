@@ -27,7 +27,7 @@ void main() {
       const int categoryId = 1;
 
       final products = await productService.fetchProductsByCategoryId(categoryId);
-
+      print(products);
       expect(products.isNotEmpty, true, reason: "Products list should not be empty");
     });
 
@@ -48,7 +48,7 @@ void main() {
 
       final result = await productService.fetchProductCoverImage(imageStr);
 
-      expect(result, true);
+      expect(result, isNotEmpty);
     });
 
 

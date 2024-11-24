@@ -5,5 +5,5 @@ class Colors{
   int orange = 0XFFEF6B4A;
   int white = 0XFFFFFFFF;
   int loginRegisterTFFFillColor = 0XFFF4F4FF;
-  int loginRegisterTFFHintTextColor = 0XFF090937;
+  int mainTextColor = 0XFF090937;
 }

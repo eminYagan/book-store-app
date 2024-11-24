@@ -9,6 +9,7 @@ class Book {
   final String slug;
   final int likes;
   final DateTime createdAt;
+  final int categoryId;
 
   Book({
     required this.id,
@@ -21,6 +22,7 @@ class Book {
     required this.slug,
     required this.likes,
     required this.createdAt,
+    required this.categoryId,
   });
 
   factory Book.fromJson(Map<String, dynamic> json) {
@@ -35,6 +37,7 @@ class Book {
       slug: json["slug"],
       likes: json["likes_aggregate"]["aggregate"]["count"],
       createdAt: DateTime.parse(json["created_at"]),
+      categoryId: json["categoryId"],
     );
   }
 
@@ -52,6 +55,26 @@ class Book {
         "aggregate": {"count": likes},
       },
       "created_at": createdAt.toIso8601String(),
+      "categoryId": categoryId,
     };
+  }
+
+  // copyWith metodu
+  Book copyWith({
+    int? categoryId,
+  }) {
+    return Book(
+      id: id,
+      name: name,
+      author: author,
+      cover: cover,
+      description: description,
+      price: price,
+      sales: sales,
+      slug: slug,
+      likes: likes,
+      createdAt: createdAt,
+      categoryId: categoryId ?? this.categoryId,
+    );
   }
 }

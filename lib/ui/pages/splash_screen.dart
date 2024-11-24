@@ -1,6 +1,7 @@
 import 'package:book_store_app/core/providers/language_provider.dart';
 import 'package:book_store_app/imports/imports.dart';
 import 'package:book_store_app/ui/pages/authentication/login_page.dart';
+import 'package:book_store_app/ui/pages/main/home_page.dart';
 import 'package:book_store_app/ui/widgets/button.dart';
 import 'package:book_store_app/ui/widgets/logo.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +13,8 @@ class SplashScreen extends ConsumerWidget {
   void navigate(BuildContext context) {
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => LoginPage()),
+      //MaterialPageRoute(builder: (context) => LoginPage()),
+      MaterialPageRoute(builder: (context) => HomePage()),
     );
   }
 

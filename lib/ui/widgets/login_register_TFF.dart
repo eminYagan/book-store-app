@@ -43,7 +43,7 @@ class LoginRegisterTFF extends ConsumerWidget {
             decoration: InputDecoration(
               hintText: hintText,
               hintStyle: TextStyle(
-                  color: Color(imports.constant.colors.loginRegisterTFFHintTextColor),
+                  color: Color(imports.constant.colors.mainTextColor),
                   fontSize: 16,
                   fontWeight: FontWeight.w200),
               filled: true,
