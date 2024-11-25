@@ -3,6 +3,7 @@ import 'package:book_store_app/core/services/api/product_service.dart';
 import 'package:book_store_app/imports/imports.dart';
 import 'package:book_store_app/ui/widgets/button.dart';
 import 'package:book_store_app/ui/widgets/custom_app_bar.dart';
+import 'package:book_store_app/ui/widgets/photo_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -28,48 +29,7 @@ class BookDetailPage extends ConsumerWidget {
             child: Column(
               children: [
                 //BOOK PHOTO
-                FutureBuilder(
-                  future: productService.fetchProductCoverImage(book["cover"]),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Padding(
-                        padding: const EdgeInsets.only(top: 25),
-                        child: SizedBox(
-                          width: imports.constant.size.screenWidth * 0.37,
-                          height: imports.constant.size.screenHeight * 0.21,
-                          child: Center(
-                            child: CircularProgressIndicator(
-                              color: Color(imports.constant.colors.purple),
-                            ),
-                          ),
-                        ),
-                      );
-                    } else if (snapshot.hasData && snapshot.data != null) {
-                      return Padding(
-                        padding: const EdgeInsets.only(top: 25),
-                        child: Container(
-                          width: imports.constant.size.screenWidth * 0.37,
-                          height: imports.constant.size.screenHeight * 0.21,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: NetworkImage(snapshot.data!),
-                              fit: BoxFit.cover,
-                            ),
-                            borderRadius: BorderRadius.circular(4),
-                          ),
-                        ),
-                      );
-                    } else {
-                      return Padding(
-                        padding: const EdgeInsets.only(top: 25),
-                        child: SizedBox(
-                          width: imports.constant.size.screenWidth * 0.37,
-                          height: imports.constant.size.screenHeight * 0.21,
-                        ),
-                      );
-                    }
-                  },
-                ),
+                PhotoContainer(cover: book["cover"], width: 0.37, height: 0.21),
 
                 //BOOK NAME
                 Padding(

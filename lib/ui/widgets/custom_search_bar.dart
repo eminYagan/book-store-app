@@ -42,8 +42,14 @@ class CustomSearchBar extends ConsumerWidget {
             borderRadius: BorderRadius.circular(4),
             borderSide: BorderSide.none,
           ),
-          prefixIcon: SvgPicture.asset("assets/images/search.svg", fit: BoxFit.scaleDown,),
-          suffixIcon: SvgPicture.asset("assets/images/settings.svg", fit: BoxFit.scaleDown,),
+          prefixIcon: SvgPicture.asset(
+            "assets/images/search.svg",
+            fit: BoxFit.scaleDown,
+          ),
+          suffixIcon: SvgPicture.asset(
+            "assets/images/settings.svg",
+            fit: BoxFit.scaleDown,
+          ),
         ),
       ),
     );

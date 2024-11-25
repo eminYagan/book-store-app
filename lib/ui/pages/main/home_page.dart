@@ -4,8 +4,10 @@ import 'package:book_store_app/core/providers/product/category_provider.dart';
 import 'package:book_store_app/core/services/api/product_service.dart';
 import 'package:book_store_app/imports/imports.dart';
 import 'package:book_store_app/ui/pages/main/book_detail_page.dart';
+import 'package:book_store_app/ui/pages/main/category_books_page.dart';
 import 'package:book_store_app/ui/widgets/custom_app_bar.dart';
 import 'package:book_store_app/ui/widgets/custom_search_bar.dart';
+import 'package:book_store_app/ui/widgets/photo_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -22,92 +24,105 @@ class HomePage extends ConsumerWidget {
     final currentLanguage = ref.watch(languageProvider);
     return Scaffold(
       backgroundColor: Color(imports.constant.colors.pageBackgroundColor),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            CustomAppBar(
-              text: currentLanguage["catalog"]!,
-              logo: true,
+      body: Column(
+        children: [
+          CustomAppBar(
+            text: currentLanguage["catalog"]!,
+            logo: true,
+          ),
+          Align(
+            alignment: Alignment.centerRight,
+            child: SizedBox(
+              width: imports.constant.size.screenWidth * 0.955,
+              height: imports.constant.size.screenHeight * 0.054,
+              child: categoriesAsyncValue.when(
+                data: (categories) {
+                  return ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: categories.length,
+                    itemBuilder: (context, index) {
+                      final category = categories[index];
+                      return Padding(
+                        padding: const EdgeInsets.only(right: 12),
+                        child: Container(
+                          height: imports.constant.size.screenHeight * 0.054,
+                          padding: const EdgeInsets.only(left: 25, right: 25),
+                          decoration: BoxDecoration(
+                              color: Color(index == 0
+                                  ? imports.constant.colors.purple
+                                  : imports.constant.colors
+                                      .loginRegisterTFFFillColor),
+                              borderRadius: BorderRadius.circular(4)),
+                          child: Center(
+                              child: Text(
+                            category["name"],
+                            style: TextStyle(
+                                color: Color(index == 0
+                                    ? imports.constant.colors.white
+                                    : imports.constant.colors.mainTextColor),
+                                fontSize: 16,
+                                fontWeight: index == 0
+                                    ? FontWeight.normal
+                                    : FontWeight.w200),
+                          )),
+                        ),
+                      );
+                    },
+                  );
+                },
+                loading: () => Center(
+                    child: CircularProgressIndicator(
+                  color: Color(imports.constant.colors.purple),
+                )),
+                error: (err, stack) => Center(child: Text('Error: $err')),
+              ),
             ),
-            Align(
-              alignment: Alignment.centerRight,
-              child: SizedBox(
-                width: imports.constant.size.screenWidth * 0.955,
-                height: imports.constant.size.screenHeight * 0.054,
-                child: categoriesAsyncValue.when(
-                  data: (categories) {
-                    return ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: categories.length,
-                      itemBuilder: (context, index) {
-                        final category = categories[index];
-                        return Padding(
-                          padding: const EdgeInsets.only(right: 12),
-                          child: Container(
-                            height: imports.constant.size.screenHeight * 0.054,
-                            padding: const EdgeInsets.only(left: 25, right: 25),
-                            decoration: BoxDecoration(
-                                color: Color(imports.constant.colors.purple),
-                                borderRadius: BorderRadius.circular(4)),
-                            child: Center(
-                                child: Text(
-                              category["name"],
-                              style: TextStyle(
-                                  color: Color(imports.constant.colors.white),
-                                  fontSize: 16),
-                            )),
-                          ),
-                        );
-                      },
-                    );
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 20),
+            child: CustomSearchBar(
+              controller: controller,
+            ),
+          ),
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: categoriesAsyncValue.when(
+                  data: (data) {
+                    return data
+                        .map(
+                          (item) => item["id"] != 0
+                              ? categoryBooks(ref, item, context)
+                              : Container(),
+                        )
+                        .toList();
                   },
-                  loading: () => Center(
+                  loading: () => [
+                    Center(
                       child: CircularProgressIndicator(
-                    color: Color(imports.constant.colors.purple),
-                  )),
-                  error: (err, stack) => Center(child: Text('Error: $err')),
+                        color: Color(imports.constant.colors.purple),
+                      ),
+                    ),
+                  ],
+                  error: (err, stack) => [
+                    Center(
+                      child: Text('Error: $err'),
+                    ),
+                  ],
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 20),
-              child: CustomSearchBar(
-                controller: controller,
-              ),
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: categoriesAsyncValue.when(
-                data: (data) {
-                  return data
-                      .map(
-                        (item) => item["id"] != 0
-                            ? categoryBooks(ref, item)
-                            : Container(),
-                      )
-                      .toList();
-                },
-                loading: () => [
-                  Center(
-                    child: CircularProgressIndicator(
-                      color: Color(imports.constant.colors.purple),
-                    ),
-                  ),
-                ],
-                error: (err, stack) => [
-                  Center(
-                    child: Text('Error: $err'),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
+          ),
+          const SizedBox(
+            height: 50,
+          )
+        ],
       ),
     );
   }
 
-  Widget categoryBooks(WidgetRef ref, var item) {
+  Widget categoryBooks(WidgetRef ref, var item, BuildContext context) {
     final booksAsyncValue = ref.watch(booksProvider(item["id"]));
     final currentLanguage = ref.watch(languageProvider);
     return Align(
@@ -134,7 +149,12 @@ class HomePage extends ConsumerWidget {
                           fontWeight: FontWeight.bold),
                     ),
                     InkWell(
-                        onTap: () {},
+                        onTap: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => CategoryBooksPage(
+                                      name: item["name"], id: item["id"])),
+                            ),
                         child: Text(
                           currentLanguage["viewAll"]!,
                           style: TextStyle(
@@ -183,48 +203,10 @@ class HomePage extends ConsumerWidget {
           color: Color(imports.constant.colors.loginRegisterTFFFillColor),
           child: Row(
             children: [
-              FutureBuilder(
-                future: productService.fetchProductCoverImage(book["cover"]),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Padding(
-                      padding: const EdgeInsets.only(left: 10, right: 10),
-                      child: SizedBox(
-                        width: imports.constant.size.screenWidth * 0.206,
-                        height: imports.constant.size.screenHeight * 0.14,
-                        child: Center(
-                          child: CircularProgressIndicator(
-                            color: Color(imports.constant.colors.purple),
-                          ),
-                        ),
-                      ),
-                    );
-                  } else if (snapshot.hasData && snapshot.data != null) {
-                    return Padding(
-                      padding: const EdgeInsets.only(left: 10, right: 10),
-                      child: Container(
-                        width: imports.constant.size.screenWidth * 0.206,
-                        height: imports.constant.size.screenHeight * 0.14,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: NetworkImage(snapshot.data!),
-                            fit: BoxFit.cover,
-                          ),
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                      ),
-                    );
-                  } else {
-                    return Padding(
-                      padding: const EdgeInsets.only(left: 10, right: 10),
-                      child: SizedBox(
-                        width: imports.constant.size.screenWidth * 0.206,
-                        height: imports.constant.size.screenHeight * 0.14,
-                      ),
-                    );
-                  }
-                },
-              ),
+              //BOOK PHOTO
+              PhotoContainer(cover: book["cover"], width: 0.206, height: 0.14),
+
+              //BOOK INFORMATION
               Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [

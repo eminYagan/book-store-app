@@ -14,7 +14,6 @@ class SplashScreen extends ConsumerWidget {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => LoginPage()),
-      //MaterialPageRoute(builder: (context) => HomePage()),
     );
   }
 
