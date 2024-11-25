@@ -22,7 +22,7 @@ class Button extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: imports.constant.size.screenWidth*0.85,
+      width: imports.constant.size.screenWidth*0.91,
       height: imports.constant.size.screenHeight*0.063,
       decoration: BoxDecoration(
         color: Color(backgroundColor),
@@ -31,10 +31,16 @@ class Button extends StatelessWidget {
       child: Row(
         mainAxisAlignment: secondtext == null ? MainAxisAlignment.center : MainAxisAlignment.spaceBetween,
         children: [
-          textWidget(text),
+          Padding(
+            padding: EdgeInsets.only(left: secondtext != null ? 15 : 0),
+            child: textWidget(text),
+          ),
 
           secondtext != null
-              ? textWidget(text)
+              ? Padding(
+                padding: const EdgeInsets.only(right: 15),
+                child: textWidget(secondtext!),
+              )
               : Container(),
         ],
       ),
@@ -47,7 +53,7 @@ class Button extends StatelessWidget {
       style: TextStyle(
         color: Color(textColor),
         fontSize: 16,
-        fontWeight: FontWeight.w600
+        fontWeight: FontWeight.w500
       ),
     );
   }

@@ -20,6 +20,9 @@ const Map<String, String> trMap = {
   "catalog" : "Katalog",
   "viewAll" : "Hepsini Göster",
   "search" : "Ara",
+  "byNow" : "Satın Al",
+  "bookdetails" : "Kitap Detayı",
+  "summary" : "Özet",
 
 };
 
@@ -45,4 +48,7 @@ const Map<String, String> enMap = {
   "catalog" : "Catalog",
   "viewAll" : "View All",
   "search" : "Search",
+  "byNow" : "By Now",
+  "bookdetails" : "Book Details",
+  "summary" : "Summary",
 };

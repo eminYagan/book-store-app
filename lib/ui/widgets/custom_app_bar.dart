@@ -37,7 +37,9 @@ class CustomAppBar extends StatelessWidget {
                 ? Logo(
                     width: imports.constant.size.screenWidth * 0.125,
                     height: imports.constant.size.screenHeight * 0.036)
-                : SvgPicture.asset("assets/images/arrow.svg"),
+                : InkWell(
+                onTap: ()=>Navigator.pop(context),
+                child: SvgPicture.asset("assets/images/arrow.svg")),
             Text(
               text,
               style: TextStyle(
@@ -45,7 +47,7 @@ class CustomAppBar extends StatelessWidget {
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
               ),
-            )
+            ),
           ],
         ),
       ),

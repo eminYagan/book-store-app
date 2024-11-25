@@ -10,7 +10,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class HomePage extends ConsumerWidget {
-
   Imports imports = Imports();
 
   ProductService productService = ProductService();
@@ -26,13 +25,15 @@ class HomePage extends ConsumerWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            CustomAppBar(text: currentLanguage["catalog"]!, logo: true,),
-
+            CustomAppBar(
+              text: currentLanguage["catalog"]!,
+              logo: true,
+            ),
             Align(
               alignment: Alignment.centerRight,
               child: SizedBox(
-                width: imports.constant.size.screenWidth*0.955,
-                height: imports.constant.size.screenHeight*0.054,
+                width: imports.constant.size.screenWidth * 0.955,
+                height: imports.constant.size.screenHeight * 0.054,
                 child: categoriesAsyncValue.when(
                   data: (categories) {
                     return ListView.builder(
@@ -43,35 +44,48 @@ class HomePage extends ConsumerWidget {
                         return Padding(
                           padding: const EdgeInsets.only(right: 12),
                           child: Container(
-                            height: imports.constant.size.screenHeight*0.054,
+                            height: imports.constant.size.screenHeight * 0.054,
                             padding: const EdgeInsets.only(left: 25, right: 25),
                             decoration: BoxDecoration(
                                 color: Color(imports.constant.colors.purple),
-                                borderRadius: BorderRadius.circular(4)
-                            ),
+                                borderRadius: BorderRadius.circular(4)),
                             child: Center(
-                                child: Text(category["name"], style: TextStyle(color: Color(imports.constant.colors.white), fontSize: 16),)),
+                                child: Text(
+                              category["name"],
+                              style: TextStyle(
+                                  color: Color(imports.constant.colors.white),
+                                  fontSize: 16),
+                            )),
                           ),
                         );
                       },
                     );
                   },
-                  loading: () => Center(child: CircularProgressIndicator(color: Color(imports.constant.colors.purple),)),
+                  loading: () => Center(
+                      child: CircularProgressIndicator(
+                    color: Color(imports.constant.colors.purple),
+                  )),
                   error: (err, stack) => Center(child: Text('Error: $err')),
                 ),
               ),
             ),
-
             Padding(
               padding: const EdgeInsets.only(top: 20),
-              child: CustomSearchBar(controller: controller,),
+              child: CustomSearchBar(
+                controller: controller,
+              ),
             ),
-
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: categoriesAsyncValue.when(
                 data: (data) {
-                  return data.map((item) => item["id"] != 0 ? categoryBooks(ref, item) : Container(),).toList();
+                  return data
+                      .map(
+                        (item) => item["id"] != 0
+                            ? categoryBooks(ref, item)
+                            : Container(),
+                      )
+                      .toList();
                 },
                 loading: () => [
                   Center(
@@ -93,7 +107,7 @@ class HomePage extends ConsumerWidget {
     );
   }
 
-  Widget categoryBooks(WidgetRef ref, var item){
+  Widget categoryBooks(WidgetRef ref, var item) {
     final booksAsyncValue = ref.watch(booksProvider(item["id"]));
     final currentLanguage = ref.watch(languageProvider);
     return Align(
@@ -101,28 +115,39 @@ class HomePage extends ConsumerWidget {
       child: Padding(
         padding: const EdgeInsets.only(top: 50),
         child: SizedBox(
-          width: imports.constant.size.screenWidth*0.955,
-          height: imports.constant.size.screenHeight*0.215,
+          width: imports.constant.size.screenWidth * 0.955,
+          height: imports.constant.size.screenHeight * 0.215,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(
-                width: imports.constant.size.screenWidth*0.91,
+                width: imports.constant.size.screenWidth * 0.91,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(item["name"], style: TextStyle(color: Color(imports.constant.colors.mainTextColor), fontSize: 20, fontWeight: FontWeight.bold),),
+                    Text(
+                      item["name"],
+                      style: TextStyle(
+                          color: Color(imports.constant.colors.mainTextColor),
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold),
+                    ),
                     InkWell(
-                        onTap: (){},
-                        child: Text(currentLanguage["viewAll"]!, style: TextStyle(color: Color(imports.constant.colors.orange), fontSize: 12, fontWeight: FontWeight.bold),)),
+                        onTap: () {},
+                        child: Text(
+                          currentLanguage["viewAll"]!,
+                          style: TextStyle(
+                              color: Color(imports.constant.colors.orange),
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold),
+                        )),
                   ],
                 ),
               ),
-
               booksAsyncValue.when(
                 data: (books) => SizedBox(
-                  height: imports.constant.size.screenHeight*0.16,
+                  height: imports.constant.size.screenHeight * 0.16,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
                     shrinkWrap: true,
@@ -134,7 +159,8 @@ class HomePage extends ConsumerWidget {
                   ),
                 ),
                 loading: () => const Center(child: CircularProgressIndicator()),
-                error: (error, stackTrace) => Center(child: Text('Error: $error')),
+                error: (error, stackTrace) =>
+                    Center(child: Text('Error: $error')),
               ),
             ],
           ),
@@ -143,17 +169,17 @@ class HomePage extends ConsumerWidget {
     );
   }
 
-  Widget bookWidget(var book, BuildContext context){
+  Widget bookWidget(var book, BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(right: 20),
       child: InkWell(
-        onTap: ()=>Navigator.push(
+        onTap: () => Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => BookDetailPage(book: book)),
         ),
         child: Container(
-          width: imports.constant.size.screenWidth*0.52,
-          height: imports.constant.size.screenHeight*0.16,
+          width: imports.constant.size.screenWidth * 0.52,
+          height: imports.constant.size.screenHeight * 0.16,
           color: Color(imports.constant.colors.loginRegisterTFFFillColor),
           child: Row(
             children: [
@@ -164,10 +190,12 @@ class HomePage extends ConsumerWidget {
                     return Padding(
                       padding: const EdgeInsets.only(left: 10, right: 10),
                       child: SizedBox(
-                        width: imports.constant.size.screenWidth*0.206,
-                        height: imports.constant.size.screenHeight*0.14,
+                        width: imports.constant.size.screenWidth * 0.206,
+                        height: imports.constant.size.screenHeight * 0.14,
                         child: Center(
-                          child: CircularProgressIndicator(color: Color(imports.constant.colors.purple),),
+                          child: CircularProgressIndicator(
+                            color: Color(imports.constant.colors.purple),
+                          ),
                         ),
                       ),
                     );
@@ -175,8 +203,8 @@ class HomePage extends ConsumerWidget {
                     return Padding(
                       padding: const EdgeInsets.only(left: 10, right: 10),
                       child: Container(
-                        width: imports.constant.size.screenWidth*0.206,
-                        height: imports.constant.size.screenHeight*0.14,
+                        width: imports.constant.size.screenWidth * 0.206,
+                        height: imports.constant.size.screenHeight * 0.14,
                         decoration: BoxDecoration(
                           image: DecorationImage(
                             image: NetworkImage(snapshot.data!),
@@ -190,8 +218,8 @@ class HomePage extends ConsumerWidget {
                     return Padding(
                       padding: const EdgeInsets.only(left: 10, right: 10),
                       child: SizedBox(
-                        width: imports.constant.size.screenWidth*0.206,
-                        height: imports.constant.size.screenHeight*0.14,
+                        width: imports.constant.size.screenWidth * 0.206,
+                        height: imports.constant.size.screenHeight * 0.14,
                       ),
                     );
                   }
@@ -203,19 +231,39 @@ class HomePage extends ConsumerWidget {
                   Column(
                     children: [
                       SizedBox(
-                        width: imports.constant.size.screenWidth*0.25,
-                        child: Text(book["name"], style: TextStyle(color: Color(imports.constant.colors.mainTextColor), fontSize: 12, fontWeight: FontWeight.w600),),
+                        width: imports.constant.size.screenWidth * 0.25,
+                        child: Text(
+                          book["name"],
+                          style: TextStyle(
+                              color:
+                                  Color(imports.constant.colors.mainTextColor),
+                              fontSize: 12,
+                              fontWeight: FontWeight.w600),
+                        ),
                       ),
                       const SizedBox(height: 10),
                       SizedBox(
-                        width: imports.constant.size.screenWidth*0.25,
-                        child: Text(book["author"], style: TextStyle(color: Color(imports.constant.colors.mainTextColor), fontSize: 10, fontWeight: FontWeight.w500),),
+                        width: imports.constant.size.screenWidth * 0.25,
+                        child: Text(
+                          book["author"],
+                          style: TextStyle(
+                              color:
+                                  Color(imports.constant.colors.mainTextColor),
+                              fontSize: 10,
+                              fontWeight: FontWeight.w500),
+                        ),
                       ),
                     ],
                   ),
                   SizedBox(
-                    width: imports.constant.size.screenWidth*0.25,
-                    child: Text("${double.parse(book["price"].toString())} \$", style: TextStyle(color: Color(imports.constant.colors.purple), fontSize: 16, fontWeight: FontWeight.bold),),
+                    width: imports.constant.size.screenWidth * 0.25,
+                    child: Text(
+                      "${double.parse(book["price"].toString())} \$",
+                      style: TextStyle(
+                          color: Color(imports.constant.colors.purple),
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold),
+                    ),
                   ),
                 ],
               ),
